@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+<a href='/'>Go back to home</a>
+
+<h1>Create a new management</h1>
+    <form method='post'>
+        {% csrf_token %}
+        {{form.as_p}}
+        <input type='submit'/>
+    </form>
+{% endblock content %}
