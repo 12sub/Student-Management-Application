@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Management, Students, Lecturers, UserProfile, User
+from .models import Management, Students, Lecturers, UserProfile, User, UserAgent
 
 # Register your models here.
 
@@ -17,3 +17,4 @@ admin.site.register(Students, StudentsAdmin)
 admin.site.register(Lecturers, LecturersAdmin)
 admin.site.register(UserProfile)
 admin.site.register(User)
+admin.site.register(UserAgent)
