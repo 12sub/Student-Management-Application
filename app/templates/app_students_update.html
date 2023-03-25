@@ -8,7 +8,7 @@
         <h2 class="text-sm title-font text-gray-500 tracking-widest">STUDENTS</h2>
         <h1 class="text-gray-900 text-3xl title-font font-medium mb-4">This Space is for: {{students.name}}</h1>
         <div class="flex mb-4">
-          <a class="flex-grow border-b-2 border-gray-300 py-2 text-lg px-1">Description</a>
+          <a href='{% url 'apps:student_detail' user.pk %}' class="flex-grow border-b-2 border-gray-300 py-2 text-lg px-1">Description</a>
           <a href='/' class="flex-grow border-b-2 border-gray-300 py-2 text-lg px-1">Home</a>
           <a href='{% url 'apps:student_update' user.pk %}' class="flex-grow text-indigo-500 border-b-2 border-indigo-500 py-2 text-lg px-1">Update</a>
         </div>

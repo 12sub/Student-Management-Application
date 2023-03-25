@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, reverse 
 from django.core.mail import send_mail
+from django.contrib.auth.decorators import login_required
 from .models import User, Management, Lecturers, Students
 from .forms import AppForm, AppModelForm, StudentModelForm, UserForm
 from django.views.generic import ListView, CreateView, UpdateView
@@ -15,6 +16,7 @@ class SignupView(CreateView):
 def landing_page(request):
     return render(request, 'landing.html')
 
+@login_required
 def home_page(request):
     model = Management.objects.all()
     context = {
@@ -22,6 +24,7 @@ def home_page(request):
     }
     return render(request, 'index.html', context=context)
 
+@login_required
 def students_page(request):
     model = Students.objects.all()
     context = {
@@ -29,6 +32,7 @@ def students_page(request):
     }
     return render(request, 'students.html', context=context)
 
+@login_required
 def app_detail(request, pk):
     model = Management.objects.get(id=pk)
     context = {
@@ -36,6 +40,7 @@ def app_detail(request, pk):
     }
     return render(request, 'app_list.html', context=context)
 
+@login_required
 def app_student_detail(request, pk):
     model = Students.objects.get(id=pk)
     context = {
@@ -58,7 +63,7 @@ def app_student_detail(request, pk):
 #         )
 #         return super(ManageCreateView, self).form_valid(form)
     
-
+@login_required
 def app_create(request):
     form = AppModelForm()
     if request.method == "POST":
@@ -91,6 +96,7 @@ def app_create(request):
     }
     return render(request, 'app_create.html', context=context)
 
+@login_required
 def app_students(request):
     form = StudentModelForm()
     if request.method == "POST":
@@ -105,6 +111,7 @@ def app_students(request):
     }
     return render(request, 'app_students.html', context=context)
 
+@login_required
 def app_students_update(request, pk):
     model = model = Students.objects.get(id=pk)
     form = StudentModelForm(instance=model)
@@ -121,6 +128,7 @@ def app_students_update(request, pk):
     }
     return render(request, 'app_students_update.html', context=context)
 
+@login_required
 def app_update(request, pk):
      model = Management.objects.get(id=pk)
      form = AppModelForm(instance=model)
@@ -138,11 +146,13 @@ def app_update(request, pk):
     }
      return render(request, 'app_update.html', context=context)
 
+@login_required
 def app_delete(request, pk):
     model = Management.objects.get(id=pk)
     model.delete()
     return redirect('/')
 
+@login_required
 def app_student_delete(request, pk):
     model = Students.objects.get(id=pk)
     model.delete()
