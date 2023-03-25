@@ -11,7 +11,7 @@
         <div class="flex mb-4">
           <a class="flex-grow text-indigo-500 border-b-2 border-indigo-500 py-2 text-lg px-1">Description</a>
           <a href='/' class="flex-grow border-b-2 border-gray-300 py-2 text-lg px-1">Home</a>
-          <a href='/app/' class="flex-grow border-b-2 border-gray-300 py-2 text-lg px-1">Management Section</a>
+          <a href='{% url 'apps:update' user.pk %}' class="flex-grow border-b-2 border-gray-300 py-2 text-lg px-1">Update Management</a>
         </div>
         <p class="leading-relaxed mb-4">Fam locavore kickstarter distillery. Mixtape chillwave tumeric sriracha taximy chia microdosing tilde DIY. XOXO fam inxigo juiceramps cornhole raw denim forage brooklyn. Everyday carry +1 seitan poutine tumeric. Gastropub blue bottle austin listicle pour-over, neutra jean.</p>
         <div class="flex border-t border-gray-200 py-2">
@@ -27,7 +27,7 @@
           <span class="ml-auto text-gray-900">{{students.date_of_employment}}</span>
         </div>
         <div class="flex">
-          <button class="flex text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded"><a href='{% url 'apps:update' user.pk %}'>Update</a></button>
+          <button class="flex text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded"><a>Update</a></button>
           <button class="flex ml-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded"><a href='{% url 'apps:delete' user.pk %}'>Delete</a></button>
         </div>
       </div>
