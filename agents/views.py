@@ -1,9 +1,11 @@
+import random
 from django.shortcuts import render
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import reverse
 from app.models import UserAgent
 from .forms import AgentModelForm
+from django.core.mail import send_mail
 from .mixins import OrganisorAndLoginRequiredMixin
 
 class AgentListView(OrganisorAndLoginRequiredMixin, ListView):
@@ -21,9 +23,21 @@ class AgentCreateView(OrganisorAndLoginRequiredMixin, CreateView):
         return reverse("agents:agents")
     
     def form_valid(self, form):
-        agent = form.save(commit=False)
-        agent.organization = self.request.user.userprofile
-        agent.save()
+        user = form.save(commit=False)
+        user.is_agent = True
+        user.is_organisor = False
+        user.set_password(f"{random.randint(0, 100000)}")
+        user.save()
+        UserAgent.objects.create(
+            user=user,
+            organization = self.request.user.userprofile,
+        )
+        send_mail(
+            subject = "Agent Smith has been created",
+            message = "You have been created as an agent for the matrix.",
+            from_email="admin@test.com",
+            recipient_list = [user.email]
+        )
         return super(AgentCreateView, self).form_valid(form)
     
 class AgentDetailView(OrganisorAndLoginRequiredMixin, DetailView):
