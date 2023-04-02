@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from .models import User, Management, Lecturers, Students
 from .forms import AppForm, AppModelForm, StudentModelForm, UserForm
 from django.views.generic import ListView, CreateView, UpdateView
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db import IntegrityError
 
 class SignupView(CreateView):
@@ -32,6 +33,16 @@ def students_page(request):
     }
     return render(request, 'students.html', context=context)
 
+class ManagementListView(LoginRequiredMixin, ListView):
+    template_name = 'app_list.html'
+    context_object_name = 'students'
+    
+    def get_queryset(self):
+        queryset = Students.objects.all()
+        if self.request.user.is_agent:
+            queryset = queryset.filter(agent_user=self.request.user)
+        return queryset
+
 @login_required
 def app_detail(request, pk):
     model = Management.objects.get(id=pk)
@@ -39,6 +50,20 @@ def app_detail(request, pk):
         'students': model
     }
     return render(request, 'app_list.html', context=context)
+
+class StudentListView(LoginRequiredMixin, ListView):
+    template_name = 'app_student_list.html'
+    context_object_name = 'students'
+    
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_organisor:
+            queryset = Management.objects.filter(organization=user.userprofile)
+        else:
+            queryset = Management.objects.filter(organization=user.useragent.organization)
+            #Filter for agent logged in
+            queryset = queryset.filter(agent_user=user)
+        return queryset
 
 @login_required
 def app_student_detail(request, pk):
@@ -82,12 +107,14 @@ def app_create(request):
             email = form.cleaned_data['email']
             profession = form.cleaned_data['profession']
             date_of_employment = form.cleaned_data['date_of_employment']
+            organization = form.cleaned_data['organization']
             # lecturers = Lecturers.objects.first()
             Management.objects.create(
                 name=name,
                 email=email,
                 profession=profession,
-                date_of_employment=date_of_employment
+                date_of_employment=date_of_employment, 
+                organization=organization
             )
             print('Lead Has been created!!!')
             return redirect('/')

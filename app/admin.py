@@ -4,7 +4,7 @@ from .models import Management, Students, Lecturers, UserProfile, User, UserAgen
 # Register your models here.
 
 class ManagemantAdmin(admin.ModelAdmin):
-    list_display = ('name', 'email', 'profession', 'date_of_employment')
+    list_display = ('name', 'email', 'profession', 'date_of_employment', 'organization')
 
 class LecturersAdmin(admin.ModelAdmin):
     list_display = ('name', 'email', 'subjects_taught', 'salary', 'level_of_expertise', 'years_of_experience')

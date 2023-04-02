@@ -12,7 +12,8 @@ class AppModelForm(forms.ModelForm):
             'name',
             'email',
             'profession',
-            'date_of_employment'
+            'date_of_employment',
+            'organization'
         )
         
 class StudentModelForm(forms.ModelForm):

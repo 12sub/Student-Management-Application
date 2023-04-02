@@ -68,6 +68,8 @@ class User(AbstractUser):
 
     Username and password are required. Other fields are optional.
     """
+    is_organisor = models.BooleanField(default=True)
+    is_agent = models.BooleanField(default=False)
     is_admin=models.BooleanField('Is Admin',default=False)
     is_customer=models.BooleanField('Is Customer',default=True)
     class Meta(AbstractUser.Meta):
@@ -80,10 +82,11 @@ class UserProfile(models.Model):
         return self.user.username
         
 class Management(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
     name = models.CharField(max_length=20)
     email = models.EmailField(max_length=25, unique=True)
     profession = models.CharField(choices=PROFESSION, max_length=100)
+    organization = models.ForeignKey(UserProfile, null=True, on_delete=models.CASCADE)
     date_of_employment = models.DateField(max_length=20, null=True)
     # lecturers = models.ForeignKey("Lecturers", on_delete=models.CASCADE, null=True)
     
@@ -122,6 +125,7 @@ class Students(models.Model):
     Lecturers = models.ForeignKey(Lecturers, on_delete=models.CASCADE, null=True)
     # subjects_offered = models.ManyToManyFields()
     year_level = models.CharField(choices=LEVEL, max_length=1)
+    # organization = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     academic_level = models.CharField(choices=ACADEMIC_LEVEL, max_length=1)
     description = models.TextField()
     
