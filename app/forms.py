@@ -38,3 +38,6 @@ class AppForm(forms.Form):
     email = forms.EmailField()
     profession = forms.CharField()
     date_of_employment = forms.DateField()
+    
+class AssignAgentForm(forms.Form):
+    agent = forms.ChoiceField(choices=["agent 1", "agent 2","agent 3"])

@@ -2,10 +2,11 @@ from django.shortcuts import render, redirect, reverse
 from django.core.mail import send_mail
 from django.contrib.auth.decorators import login_required
 from .models import User, Management, Lecturers, Students
-from .forms import AppForm, AppModelForm, StudentModelForm, UserForm
-from django.views.generic import ListView, CreateView, UpdateView
+from .forms import AppForm, AppModelForm, AssignAgentForm, StudentModelForm, UserForm
+from django.views.generic import ListView, CreateView, UpdateView, FormView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db import IntegrityError
+from agents.mixins import OrganisorAndLoginRequiredMixin
 
 class SignupView(CreateView):
     template_name = "registration/signup.html"
@@ -42,6 +43,8 @@ class ManagementListView(LoginRequiredMixin, ListView):
         if self.request.user.is_agent:
             queryset = queryset.filter(agent_user=self.request.user)
         return queryset
+    
+
 
 @login_required
 def app_detail(request, pk):
@@ -64,6 +67,16 @@ class StudentListView(LoginRequiredMixin, ListView):
             #Filter for agent logged in
             queryset = queryset.filter(agent_user=user)
         return queryset
+    # def get_context_data(self, **kwargs):
+        # user = self.request.user
+    #     context = super(ManagementListView, self).get_context_data(**kwargs)
+    #     if user.is_organisor:
+    #         queryset = Management.objects.filter(
+    #             organization=user.userprofile, 
+    #             agent__isnull = True)
+    #     context.update({
+    #         "unassigned_leads": queryset
+    #     })
 
 @login_required
 def app_student_detail(request, pk):
@@ -184,3 +197,10 @@ def app_student_delete(request, pk):
     model = Students.objects.get(id=pk)
     model.delete()
     return redirect('/')
+
+class AssignAgentView(OrganisorAndLoginRequiredMixin, FormView):
+    template_name = "assign_agent.html"
+    form_class = AssignAgentForm
+    
+    def get_success_url(self):
+        return reverse('app_detail')
