@@ -1,12 +1,19 @@
 {% extends "base.html" %}
+{% load tailwind_filters %}
 
 {% block content %}
 <a href='/'>Go back to home</a>
 
-<h1>Create a new Student</h1>
+<div class="max-w-lg mx-auto">
+    <div class="text-lg mb-3 border-b-2 py-2 text-gray-500">
+    <h1>Create a new Student</h1>
+    </div>
     <form method='post'>
         {% csrf_token %}
-        {{form.as_p}}
+        {{form|crispy}}
+        <div class="py-5 border-blue-500 mt-5 hover:bg-blue-500 rounded-md text-center bg-indigo-500 text-white">
         <input type='submit'/>
+        </div>
     </form>
+</div>
 {% endblock content %}
