@@ -202,5 +202,19 @@ class AssignAgentView(OrganisorAndLoginRequiredMixin, FormView):
     template_name = "assign_agent.html"
     form_class = AssignAgentForm
     
+    def get_form_kwargs(self, **kwargs):
+        kwargs = super(AssignAgentView, self).get_form_kwargs
+        kwargs.update({
+            "request": self.request
+        })
+        return kwargs
+        
     def get_success_url(self):
         return reverse('app_detail')
+    
+    def form_valid(self, form):
+        agent =form.cleaned_data["agent"]
+        app = Management.objects.get(id=self.kwargs["pk"])
+        app.agent = agent
+        app.save()
+        return super(AssignAgentView, self).form_valid(form)
