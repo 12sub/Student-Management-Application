@@ -75,6 +75,13 @@ class User(AbstractUser):
     class Meta(AbstractUser.Meta):
         swappable = 'AUTH_USER_MODEL'
         
+class Images(models.Model):
+    text = models.CharField(max_length=30)
+    image = models.ImageField(upload_to='images/')
+    
+    def __str__(self):
+        return self.text
+        
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     

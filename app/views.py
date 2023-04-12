@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect, reverse 
 from django.core.mail import send_mail
 from django.contrib.auth.decorators import login_required
-from .models import User, Management, Lecturers, Students
+from .models import User, Management, Lecturers, Students, Images
 from .forms import AppForm, AppModelForm, AssignAgentForm, StudentModelForm, UserForm
-from django.views.generic import ListView, CreateView, UpdateView, FormView
+from django.views.generic import ListView, CreateView, UpdateView, FormView, TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db import IntegrityError
 from agents.mixins import OrganisorAndLoginRequiredMixin
@@ -17,6 +17,12 @@ class SignupView(CreateView):
 
 def landing_page(request):
     return render(request, 'landing.html')
+
+class HomePageView(TemplateView):
+    model = Images
+    template_name = "landing.html"
+    context_object_name = "images"
+    
 
 @login_required
 def home_page(request):

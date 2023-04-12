@@ -3,7 +3,7 @@ from .views import home_page, app_students, app_update, app_delete, app_students
 
 app_name = "apps"
 urlpatterns = [
-    path('', home_page, name='home'),
+    path('', home_page,  name='home'),
     path('<int:pk>/', ManagementListView.as_view(), name='detail'),
     path('<int:pk>/assign-agent/', AssignAgentView.as_view(),name='assign_agent'),
     path('<int:pk>/update/', app_update, name='update'),
